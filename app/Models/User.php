@@ -3,23 +3,26 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Models\Contact;
 
 class User extends Model implements Authenticatable
 {
     protected $table = 'users';
+
     protected $primaryKey = 'id';
+
     protected $keyType = 'int';
+
     public $timestamps = true;
+
     public $incrementing = true;
 
     protected $fillable = [
         'username',
         'password',
-        'name'
+        'name',
+        'token',
     ];
 
     public function contacts(): HasMany

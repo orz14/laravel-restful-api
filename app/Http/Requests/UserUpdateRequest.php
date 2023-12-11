@@ -25,14 +25,14 @@ class UserUpdateRequest extends FormRequest
     {
         return [
             'name' => ['nullable', 'max:100'],
-            'password' => ['nullable', 'max:100']
+            'password' => ['nullable', 'max:100'],
         ];
     }
 
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response([
-            'errors' => $validator->getMessageBag()
+            'errors' => $validator->getMessageBag(),
         ], 400));
     }
 }

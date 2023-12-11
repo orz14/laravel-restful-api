@@ -10,7 +10,6 @@ use App\Models\User;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -25,9 +24,9 @@ class UserController extends Controller
             throw new HttpResponseException(response([
                 'errors' => [
                     'username' => [
-                        'Username already registered'
-                    ]
-                ]
+                        'Username already registered',
+                    ],
+                ],
             ], 400));
         }
 
@@ -43,13 +42,13 @@ class UserController extends Controller
         $data = $request->validated();
 
         $user = User::where('username', $data['username'])->first();
-        if (!$user || !Hash::check($data['password'], $user->password)) {
+        if (! $user || ! Hash::check($data['password'], $user->password)) {
             throw new HttpResponseException(response([
                 'errors' => [
                     'message' => [
-                        'Username or password is incorrect'
-                    ]
-                ]
+                        'Username or password is incorrect',
+                    ],
+                ],
             ], 401));
         }
 
@@ -62,6 +61,7 @@ class UserController extends Controller
     public function get(Request $request): UserResource
     {
         $user = Auth::user();
+
         return new UserResource($user);
     }
 
@@ -80,6 +80,7 @@ class UserController extends Controller
         }
 
         $user->save();
+
         return new UserResource($user);
     }
 
@@ -90,7 +91,7 @@ class UserController extends Controller
         $user->save();
 
         return response()->json([
-            'data' => true
+            'data' => true,
         ])->setStatusCode(200);
     }
 }

@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Contact;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ContactSeeder extends Seeder
@@ -20,7 +19,7 @@ class ContactSeeder extends Seeder
             'last_name' => 'test',
             'email' => 'test@test.test',
             'phone' => '085758',
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
     }
 }

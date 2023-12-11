@@ -5,13 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AddressCreateRequest;
 use App\Http\Requests\AddressUpdateRequest;
 use App\Http\Resources\AddressResource;
-use App\Http\Resources\ContactResource;
 use App\Models\Address;
 use App\Models\Contact;
 use App\Models\User;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AddressController extends Controller
@@ -19,30 +17,32 @@ class AddressController extends Controller
     private function getContact(User $user, int $idContact): Contact
     {
         $contact = Contact::where('user_id', $user->id)->where('id', $idContact)->first();
-        if (!$contact) {
+        if (! $contact) {
             throw new HttpResponseException(response()->json([
                 'errors' => [
                     'message' => [
-                        'Contact not found'
-                    ]
-                ]
+                        'Contact not found',
+                    ],
+                ],
             ])->setStatusCode(404));
         }
+
         return $contact;
     }
 
     private function getAddress(Contact $contact, int $idAddress): Address
     {
         $address = Address::where('contact_id', $contact->id)->where('id', $idAddress)->first();
-        if (!$address) {
+        if (! $address) {
             throw new HttpResponseException(response()->json([
                 'errors' => [
                     'message' => [
-                        'Address not found'
-                    ]
-                ]
+                        'Address not found',
+                    ],
+                ],
             ])->setStatusCode(404));
         }
+
         return $address;
     }
 
@@ -90,7 +90,7 @@ class AddressController extends Controller
         $address->delete();
 
         return response()->json([
-            'data' => true
+            'data' => true,
         ])->setStatusCode(200);
     }
 
@@ -100,6 +100,7 @@ class AddressController extends Controller
         $contact = $this->getContact($user, $idContact);
 
         $addresses = Address::where('contact_id', $contact->id)->get();
-        return (AddressResource::collection($addresses))->response()->setStatusCode(200);
+
+        return AddressResource::collection($addresses)->response()->setStatusCode(200);
     }
 }

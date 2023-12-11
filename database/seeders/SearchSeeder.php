@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Contact;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class SearchSeeder extends Seeder
@@ -17,11 +16,11 @@ class SearchSeeder extends Seeder
         $user = User::where('username', 'test')->first();
         for ($i = 0; $i < 20; $i++) {
             Contact::create([
-                'first_name' => 'first ' . $i,
-                'last_name' => 'last ' . $i,
-                'email' => 'test' . $i . '@test.test',
-                'phone' => '085758' . $i,
-                'user_id' => $user->id
+                'first_name' => 'first '.$i,
+                'last_name' => 'last '.$i,
+                'email' => 'test'.$i.'@test.test',
+                'phone' => '085758'.$i,
+                'user_id' => $user->id,
             ]);
         }
     }

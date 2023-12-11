@@ -20,12 +20,12 @@ class ApiAuthMiddleware
         $token = $request->header('Authorization');
         $authenticate = true;
 
-        if (!$token) {
+        if (! $token) {
             $authenticate = false;
         }
 
         $user = User::where('token', $token)->first();
-        if (!$user) {
+        if (! $user) {
             $authenticate = false;
         } else {
             Auth::login($user);
@@ -37,9 +37,9 @@ class ApiAuthMiddleware
             return response()->json([
                 'errors' => [
                     'message' => [
-                        'Unauthorized'
-                    ]
-                ]
+                        'Unauthorized',
+                    ],
+                ],
             ])->setStatusCode(401);
         }
     }

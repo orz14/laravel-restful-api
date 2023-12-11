@@ -4,8 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Database\Seeders\UserSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class UserTest extends TestCase
@@ -15,13 +13,13 @@ class UserTest extends TestCase
         $this->post('/api/users', [
             'username' => 'oriz',
             'password' => 'rahasia',
-            'name' => 'Oriz Wahyu N'
+            'name' => 'Oriz Wahyu N',
         ])->assertStatus(201)
             ->assertJson([
                 'data' => [
                     'username' => 'oriz',
-                    'name' => 'Oriz Wahyu N'
-                ]
+                    'name' => 'Oriz Wahyu N',
+                ],
             ]);
     }
 
@@ -30,20 +28,20 @@ class UserTest extends TestCase
         $this->post('/api/users', [
             'username' => '',
             'password' => '',
-            'name' => ''
+            'name' => '',
         ])->assertStatus(400)
             ->assertJson([
                 'errors' => [
                     'username' => [
-                        'The username field is required.'
+                        'The username field is required.',
                     ],
                     'password' => [
-                        'The password field is required.'
+                        'The password field is required.',
                     ],
                     'name' => [
-                        'The name field is required.'
-                    ]
-                ]
+                        'The name field is required.',
+                    ],
+                ],
             ]);
     }
 
@@ -53,14 +51,14 @@ class UserTest extends TestCase
         $this->post('/api/users', [
             'username' => 'oriz',
             'password' => 'rahasia',
-            'name' => 'Oriz Wahyu N'
+            'name' => 'Oriz Wahyu N',
         ])->assertStatus(400)
             ->assertJson([
                 'errors' => [
                     'username' => [
-                        'Username already registered'
-                    ]
-                ]
+                        'Username already registered',
+                    ],
+                ],
             ]);
     }
 
@@ -69,13 +67,13 @@ class UserTest extends TestCase
         $this->seed([UserSeeder::class]);
         $this->post('/api/users/login', [
             'username' => 'test',
-            'password' => 'test'
+            'password' => 'test',
         ])->assertStatus(200)
             ->assertJson([
                 'data' => [
                     'username' => 'test',
-                    'name' => 'test'
-                ]
+                    'name' => 'test',
+                ],
             ]);
 
         $user = User::where('username', 'test')->first();
@@ -86,14 +84,14 @@ class UserTest extends TestCase
     {
         $this->post('/api/users/login', [
             'username' => 'test',
-            'password' => 'test'
+            'password' => 'test',
         ])->assertStatus(401)
             ->assertJson([
                 'errors' => [
                     'message' => [
-                        'Username or password is incorrect'
-                    ]
-                ]
+                        'Username or password is incorrect',
+                    ],
+                ],
             ]);
     }
 
@@ -102,14 +100,14 @@ class UserTest extends TestCase
         $this->seed([UserSeeder::class]);
         $this->post('/api/users/login', [
             'username' => 'test',
-            'password' => 'salah'
+            'password' => 'salah',
         ])->assertStatus(401)
             ->assertJson([
                 'errors' => [
                     'message' => [
-                        'Username or password is incorrect'
-                    ]
-                ]
+                        'Username or password is incorrect',
+                    ],
+                ],
             ]);
     }
 
@@ -118,13 +116,13 @@ class UserTest extends TestCase
         $this->seed([UserSeeder::class]);
 
         $this->get('/api/users/current', [
-            'Authorization' => 'test'
+            'Authorization' => 'test',
         ])->assertStatus(200)
             ->assertJson([
                 'data' => [
                     'username' => 'test',
-                    'name' => 'test'
-                ]
+                    'name' => 'test',
+                ],
             ]);
     }
 
@@ -137,9 +135,9 @@ class UserTest extends TestCase
             ->assertJson([
                 'errors' => [
                     'message' => [
-                        'Unauthorized'
-                    ]
-                ]
+                        'Unauthorized',
+                    ],
+                ],
             ]);
     }
 
@@ -148,14 +146,14 @@ class UserTest extends TestCase
         $this->seed([UserSeeder::class]);
 
         $this->get('/api/users/current', [
-            'Authorization' => 'salah'
+            'Authorization' => 'salah',
         ])->assertStatus(401)
             ->assertJson([
                 'errors' => [
                     'message' => [
-                        'Unauthorized'
-                    ]
-                ]
+                        'Unauthorized',
+                    ],
+                ],
             ]);
     }
 
@@ -170,14 +168,14 @@ class UserTest extends TestCase
                 'password' => 'baru',
             ],
             [
-                'Authorization' => 'test'
+                'Authorization' => 'test',
             ]
         )->assertStatus(200)
             ->assertJson([
                 'data' => [
                     'username' => 'test',
-                    'name' => 'test'
-                ]
+                    'name' => 'test',
+                ],
             ]);
 
         $newUser = User::where('username', 'test')->first();
@@ -195,14 +193,14 @@ class UserTest extends TestCase
                 'name' => 'Oriz',
             ],
             [
-                'Authorization' => 'test'
+                'Authorization' => 'test',
             ]
         )->assertStatus(200)
             ->assertJson([
                 'data' => [
                     'username' => 'test',
-                    'name' => 'Oriz'
-                ]
+                    'name' => 'Oriz',
+                ],
             ]);
 
         $newUser = User::where('username', 'test')->first();
@@ -219,15 +217,15 @@ class UserTest extends TestCase
                 'name' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis provident libero adipisci eos illum fugiat eaque nihil sed ea enim architecto modi magnam vel incidunt et, nesciunt, voluptate non reiciendis neque error? Nisi consequatur nihil esse? Temporibus, illo. Aliquam sit illum sunt numquam odio ea quaerat consectetur dignissimos. Rerum, perferendis!',
             ],
             [
-                'Authorization' => 'test'
+                'Authorization' => 'test',
             ]
         )->assertStatus(400)
             ->assertJson([
                 'errors' => [
                     'name' => [
-                        'The name field must not be greater than 100 characters.'
-                    ]
-                ]
+                        'The name field must not be greater than 100 characters.',
+                    ],
+                ],
             ]);
     }
 
@@ -236,10 +234,10 @@ class UserTest extends TestCase
         $this->seed([UserSeeder::class]);
 
         $this->delete(uri: '/api/users/logout', headers: [
-            'Authorization' => 'test'
+            'Authorization' => 'test',
         ])->assertStatus(200)
             ->assertJson([
-                'data' => true
+                'data' => true,
             ]);
 
         $user = User::where('username', 'test')->first();
@@ -251,14 +249,14 @@ class UserTest extends TestCase
         $this->seed([UserSeeder::class]);
 
         $this->delete(uri: '/api/users/logout', headers: [
-            'Authorization' => 'salah'
+            'Authorization' => 'salah',
         ])->assertStatus(401)
             ->assertJson([
                 'errors' => [
                     'message' => [
-                        'Unauthorized'
-                    ]
-                ]
+                        'Unauthorized',
+                    ],
+                ],
             ]);
     }
 }

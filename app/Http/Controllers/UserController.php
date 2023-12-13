@@ -33,8 +33,17 @@ class UserController extends Controller
         $user = new User($data);
         $user->password = Hash::make($data['password']);
         $user->save();
+        $token = $user->createToken(Str::uuid()->toString())->plainTextToken;
 
-        return (new UserResource($user))->response()->setStatusCode(201);
+        // return (new UserResource($user))->response()->setStatusCode(201);
+        return response()->json([
+            'status' => true,
+            'data' => [
+                'user' => new UserResource($user),
+                'token' => $token,
+                'type' => 'Bearer',
+            ]
+        ])->setStatusCode(201);
     }
 
     public function login(UserLoginRequest $request): UserResource
@@ -42,7 +51,7 @@ class UserController extends Controller
         $data = $request->validated();
 
         $user = User::where('username', $data['username'])->first();
-        if (! $user || ! Hash::check($data['password'], $user->password)) {
+        if (!$user || !Hash::check($data['password'], $user->password)) {
             throw new HttpResponseException(response([
                 'errors' => [
                     'message' => [
@@ -86,12 +95,11 @@ class UserController extends Controller
 
     public function logout(Request $request): JsonResponse
     {
-        $user = Auth::user();
-        $user->token = null;
-        $user->save();
+        $user = $request->user();
+        $user->tokens()->delete();
 
         return response()->json([
-            'data' => true,
+            'status' => true,
         ])->setStatusCode(200);
     }
 }

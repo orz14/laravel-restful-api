@@ -5,9 +5,12 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Model implements Authenticatable
 {
+    use HasApiTokens;
+
     protected $table = 'users';
 
     protected $primaryKey = 'id';
@@ -22,7 +25,7 @@ class User extends Model implements Authenticatable
         'username',
         'password',
         'name',
-        'token',
+        // 'token',
     ];
 
     public function contacts(): HasMany

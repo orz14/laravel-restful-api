@@ -52,6 +52,9 @@
                                 "schema": {
                                     "type": "object",
                                     "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
                                         "data": {
                                             "type": "object",
                                             "properties": {
@@ -118,6 +121,9 @@
                                 "schema": {
                                     "type": "object",
                                     "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
                                         "data": {
                                             "type": "array",
                                             "items": {
@@ -200,6 +206,9 @@
                                 "schema": {
                                     "type": "object",
                                     "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
                                         "data": {
                                             "type": "object",
                                             "properties": {
@@ -250,6 +259,9 @@
                                 "schema": {
                                     "type": "object",
                                     "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
                                         "data": {
                                             "type": "object",
                                             "properties": {
@@ -300,7 +312,7 @@
                                 "schema": {
                                     "type": "object",
                                     "properties": {
-                                        "data": {
+                                        "status": {
                                             "type": "boolean"
                                         },
                                         "errors": {

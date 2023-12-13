@@ -54,6 +54,7 @@
                                     "validationerror": {
                                         "description": "Validation error",
                                         "value": {
+                                            "status": false,
                                             "errors": {
                                                 "username": [
                                                     "Username must not be blank",
@@ -78,6 +79,7 @@
                                     "success": {
                                         "description": "Success register user",
                                         "value": {
+                                            "status": true,
                                             "data": {
                                                 "id": 1,
                                                 "username": "oriz",
@@ -89,6 +91,9 @@
                                 "schema": {
                                     "type": "object",
                                     "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
                                         "data": {
                                             "type": "object",
                                             "properties": {
@@ -142,6 +147,9 @@
                                 "schema": {
                                     "type": "object",
                                     "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
                                         "data": {
                                             "type": "object",
                                             "properties": {
@@ -187,6 +195,9 @@
                                 "schema": {
                                     "type": "object",
                                     "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
                                         "data": {
                                             "type": "object",
                                             "properties": {
@@ -245,6 +256,9 @@
                                 "schema": {
                                     "type": "object",
                                     "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
                                         "data": {
                                             "type": "object",
                                             "properties": {
@@ -287,7 +301,7 @@
                                 "schema": {
                                     "type": "object",
                                     "properties": {
-                                        "data": {
+                                        "status": {
                                             "type": "boolean"
                                         },
                                         "errors": {

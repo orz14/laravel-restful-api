@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
 
@@ -18,7 +17,7 @@ class Controller extends BaseController
             'status' => true,
         ];
 
-        if (!empty($data)) {
+        if (! empty($data)) {
             $response['data'] = $data;
         }
 
@@ -31,7 +30,7 @@ class Controller extends BaseController
             'status' => false,
         ];
 
-        if (!empty($message)) {
+        if (! empty($message)) {
             $response['errors'] = $message;
         }
 

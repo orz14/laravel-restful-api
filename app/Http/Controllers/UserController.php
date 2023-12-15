@@ -7,7 +7,6 @@ use App\Http\Requests\UserRegisterRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -54,7 +53,7 @@ class UserController extends Controller
             $data = $request->validated();
 
             $user = User::where('username', $data['username'])->first();
-            if (!$user || !Auth::attempt($data) || !Hash::check($data['password'], $user->password)) {
+            if (! $user || ! Auth::attempt($data) || ! Hash::check($data['password'], $user->password)) {
                 return $this->sendError([
                     'message' => [
                         'Username or password is incorrect',

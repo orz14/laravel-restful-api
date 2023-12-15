@@ -34,6 +34,7 @@ class ContactUpdateRequest extends FormRequest
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response([
+            'status' => false,
             'errors' => $validator->getMessageBag(),
         ], 400));
     }

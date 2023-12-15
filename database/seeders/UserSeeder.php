@@ -17,14 +17,12 @@ class UserSeeder extends Seeder
             'username' => 'test',
             'password' => Hash::make('test'),
             'name' => 'test',
-            'token' => 'test',
         ]);
 
         User::create([
             'username' => 'test2',
             'password' => Hash::make('test2'),
             'name' => 'test2',
-            'token' => 'test2',
         ]);
     }
 }

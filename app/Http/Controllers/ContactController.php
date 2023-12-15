@@ -18,94 +18,140 @@ class ContactController extends Controller
 {
     public function create(ContactCreateRequest $request): JsonResponse
     {
-        $data = $request->validated();
-        $user = Auth::user();
+        try {
+            $data = $request->validated();
+            $user = Auth::user();
 
-        $contact = new Contact($data);
-        $contact->user_id = $user->id;
-        $contact->save();
+            $contact = new Contact($data);
+            $contact->user_id = $user->id;
+            $contact->save();
+            $result = new ContactResource($contact);
 
-        return (new ContactResource($contact))->response()->setStatusCode(201);
+            return $this->sendResponse($result, 201);
+        } catch (\Throwable $err) {
+            return $this->sendError([
+                'message' => [
+                    $err->getMessage(),
+                ],
+            ], 500);
+        }
     }
 
-    private function getContact(int $id, User $user): Contact
+    public function get(int $id): JsonResponse
     {
-        $contact = Contact::where('id', $id)->where('user_id', $user->id)->first();
-        if (! $contact) {
-            throw new HttpResponseException(response()->json([
-                'errors' => [
+        try {
+            $user = Auth::user();
+            $contact = Contact::where('id', $id)->where('user_id', $user->id)->first();
+            if (!$contact) {
+                return $this->sendError([
                     'message' => [
                         'Contact not found',
                     ],
+                ], 404);
+            }
+            $result = new ContactResource($contact);
+
+            return $this->sendResponse($result);
+        } catch (\Throwable $err) {
+            return $this->sendError([
+                'message' => [
+                    $err->getMessage(),
                 ],
-            ])->setStatusCode(404));
+            ], 500);
         }
-
-        return $contact;
     }
 
-    public function get(int $id): ContactResource
+    public function update(int $id, ContactUpdateRequest $request): JsonResponse
     {
-        $user = Auth::user();
-        $contact = $this->getContact($id, $user);
+        try {
+            $user = Auth::user();
+            $contact = Contact::where('id', $id)->where('user_id', $user->id)->first();
+            if (!$contact) {
+                return $this->sendError([
+                    'message' => [
+                        'Contact not found',
+                    ],
+                ], 404);
+            }
 
-        return new ContactResource($contact);
-    }
+            $data = $request->validated();
+            $contact->fill($data);
+            $contact->save();
+            $result = new ContactResource($contact);
 
-    public function update(int $id, ContactUpdateRequest $request): ContactResource
-    {
-        $user = Auth::user();
-        $contact = $this->getContact($id, $user);
-
-        $data = $request->validated();
-        $contact->fill($data);
-        $contact->save();
-
-        return new ContactResource($contact);
+            return $this->sendResponse($result);
+        } catch (\Throwable $err) {
+            return $this->sendError([
+                'message' => [
+                    $err->getMessage(),
+                ],
+            ], 500);
+        }
     }
 
     public function delete(int $id): JsonResponse
     {
-        $user = Auth::user();
-        $contact = $this->getContact($id, $user);
+        try {
+            $user = Auth::user();
+            $contact = Contact::where('id', $id)->where('user_id', $user->id)->first();
+            if (!$contact) {
+                return $this->sendError([
+                    'message' => [
+                        'Contact not found',
+                    ],
+                ], 404);
+            }
 
-        $contact->delete();
+            $contact->delete();
 
-        return response()->json([
-            'data' => true,
-        ])->setStatusCode(200);
+            return $this->sendResponse();
+        } catch (\Throwable $err) {
+            return $this->sendError([
+                'message' => [
+                    $err->getMessage(),
+                ],
+            ], 500);
+        }
     }
 
     public function search(Request $request): ContactCollection
     {
-        $user = Auth::user();
-        $page = $request->input('page', 1);
-        $size = $request->input('size', 10);
+        try {
+            $user = Auth::user();
+            $page = $request->input('page', 1);
+            $size = $request->input('size', 10);
 
-        $contacts = Contact::query()->where('user_id', $user->id);
+            $contacts = Contact::query()->where('user_id', $user->id);
 
-        $contacts = $contacts->where(function (Builder $builder) use ($request) {
-            $name = $request->input('name');
-            if ($name) {
-                $builder->where(function (Builder $builder) use ($name) {
-                    $builder->orWhere('first_name', 'like', '%'.$name.'%');
-                    $builder->orWhere('last_name', 'like', '%'.$name.'%');
-                });
-            }
+            $contacts = $contacts->where(function (Builder $builder) use ($request) {
+                $name = $request->input('name');
+                if ($name) {
+                    $builder->where(function (Builder $builder) use ($name) {
+                        $builder->orWhere('first_name', 'like', '%' . $name . '%');
+                        $builder->orWhere('last_name', 'like', '%' . $name . '%');
+                    });
+                }
 
-            $email = $request->input('email');
-            if ($email) {
-                $builder->where('email', 'like', '%'.$email.'%');
-            }
+                $email = $request->input('email');
+                if ($email) {
+                    $builder->where('email', 'like', '%' . $email . '%');
+                }
 
-            $phone = $request->input('phone');
-            if ($phone) {
-                $builder->where('phone', 'like', '%'.$phone.'%');
-            }
-        });
+                $phone = $request->input('phone');
+                if ($phone) {
+                    $builder->where('phone', 'like', '%' . $phone . '%');
+                }
+            });
 
-        $contacts = $contacts->paginate(perPage: $size, page: $page);
+            $contacts = $contacts->paginate(perPage: $size, page: $page);
 
-        return new ContactCollection($contacts);
+            return new ContactCollection($contacts);
+        } catch (\Throwable $err) {
+            return $this->sendError([
+                'message' => [
+                    $err->getMessage(),
+                ],
+            ], 500);
+        }
     }
 }

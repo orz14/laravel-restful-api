@@ -15,6 +15,7 @@ class ContactCollection extends ResourceCollection
     public function toArray(Request $request): array
     {
         return [
+            'status' => true,
             'data' => ContactResource::collection($this->collection),
         ];
     }

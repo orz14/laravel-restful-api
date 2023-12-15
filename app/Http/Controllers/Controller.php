@@ -35,6 +35,6 @@ class Controller extends BaseController
             $response['errors'] = $message;
         }
 
-        throw new HttpResponseException(response($response, $statusCode));
+        return response()->json($response)->setStatusCode($statusCode);
     }
 }

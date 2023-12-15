@@ -27,7 +27,7 @@ Route::post('/users/login', [UserController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users/current', [UserController::class, 'get']);
     Route::patch('/users/current', [UserController::class, 'update']);
-    Route::delete('/users/logout', [UserController::class, 'logout']);
+    Route::post('/users/logout', [UserController::class, 'logout']);
 
     Route::post('/contacts', [ContactController::class, 'create']);
     Route::get('/contacts', [ContactController::class, 'search']);

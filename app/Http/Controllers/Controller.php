@@ -24,14 +24,14 @@ class Controller extends BaseController
         return response()->json($response)->setStatusCode($statusCode);
     }
 
-    public function sendError($message = [], $statusCode = 404): JsonResponse
+    public function sendError($errors = [], $statusCode = 404): JsonResponse
     {
         $response = [
             'status' => false,
         ];
 
-        if (! empty($message)) {
-            $response['errors'] = $message;
+        if (! empty($errors)) {
+            $response['errors'] = $errors;
         }
 
         return response()->json($response)->setStatusCode($statusCode);

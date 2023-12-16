@@ -35,6 +35,6 @@ class UserRegisterRequest extends FormRequest
         throw new HttpResponseException(response([
             'status' => false,
             'errors' => $validator->getMessageBag(),
-        ], 400));
+        ], 422));
     }
 }
